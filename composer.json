@@ -1,0 +1,16 @@
+{
+    "name": "isemary/any-service-manager",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Isemary\\AnyServiceManager\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Abdelrahman Mostafa",
+            "email": "abdelrahmansamirmostafa@gmail.com"
+        }
+    ],
+    "require": {}
+}
