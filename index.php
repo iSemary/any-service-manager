@@ -1,9 +1,8 @@
 <?php
+require_once "./autoload.php";
 
-include_once './vendor/autoload.php';
-
-use Isemary\AnyServiceManager\OS\OperatingSystem;
-
-$os = new OperatingSystem();
-
-var_dump($os->getInfo());
+$template = $twig->load('index.twig');
+echo $template->render([
+    'title' => 'Twig Example',
+    'content' => 'This is a simple example of using Twig in PHP.'
+]);

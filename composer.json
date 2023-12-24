@@ -12,5 +12,7 @@
             "email": "abdelrahmansamirmostafa@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "twig/twig": "^3.8"
+    }
 }
