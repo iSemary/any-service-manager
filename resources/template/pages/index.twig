@@ -1,0 +1,28 @@
+{% extends "base.twig" %}
+{% block content %}
+	<div class="card">
+		<div class="card-body">
+			<div class="row w-100">
+				<div class="col-6">
+					<ul class="list-group">
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Operating System
+							<span class="badge badge-primary badge-pill">
+								{{ operating_system.name }}
+							</span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Host
+							<span class="badge badge-primary badge-pill">
+								{{ operating_system.host }}
+							</span>
+						</li>
+					</ul>
+				</div>
+				<div class="col-6">
+					<canvas id="diskSpaceChart" data-free-space="{{ operating_system.disk.free_space }}" data-total-space="{{ operating_system.disk.total_space }}" width="400" height="200"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="assets/styles/adminlte.min.css">
+		<link rel="stylesheet" href="assets/plugins/adminlte/css/adminlte.min.css">
 		<link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.min.css">
 		<link rel="stylesheet" href="assets/plugins/fontawesome-5/css/all.min.css">
-          <link rel="icon" type="image/x-icon" href="favicon.ico">
+		<link rel="icon" type="image/x-icon" href="favicon.ico">
 		<title>{{ title }}</title>
 	</head>
 	<body class="hold-transition sidebar-mini layout-fixed">
@@ -14,19 +14,19 @@
 			class="wrapper">
 			{# Header Partials #}
 			{% include './layouts/header.twig' %}
-            {# Sidebar Partials #}
+			{# Sidebar Partials #}
 			{% include './layouts/aside.twig' %}
-
+			{# Page Content #}
 			<div class="content-wrapper">
-				<h1>{{ title }}</h1>
-				<p>{{ content }}</p>
+				{% block content %}{% endblock %}
 			</div>
-
 			{# Footer Partials #}
 			{% include './layouts/footer.twig' %}
 		</div>
 		 <script src="assets/plugins/jquery/jquery.min.js"></script>
 	 <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-		 <script src="assets/scripts/adminlte.min.js"></script>
+		 <script src="assets/plugins/adminlte/js/adminlte.min.js"></script>
+		 <script src="assets/plugins/apache-charts/echarts.min.js"></script>
+		 <script src="assets/scripts/index.js"></script>
 	</body>
 </html>

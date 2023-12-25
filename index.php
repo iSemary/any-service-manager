@@ -1,10 +1,13 @@
 <?php
+
+use Isemary\AnyServiceManager\OS\OperatingSystem;
+
 require_once "./autoload.php";
 
-$template = $twig->load('index.twig');
+$template = $twig->load('pages/index.twig');
 
+$operatingSystem = new OperatingSystem();
 
 echo $template->render([
-    'title' => 'Dashboard'. $_ENV['ROOT_PASSWORD'],
-    'content' => 'This is a simple example of using Twig in PHP.'
+    'operating_system' => $operatingSystem->getInfo()
 ]);
