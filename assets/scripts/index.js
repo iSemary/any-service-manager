@@ -40,7 +40,11 @@ function renderDiskSpaceChart(chartID, totalSpace, freeSpace) {
 }
 
 $(function () {
+  // Render disk space chart
   let totalDiskSpace = $('#diskSpaceChart').data('total-space');
   let freeDiskSpace = $('#diskSpaceChart').data('free-space');
   renderDiskSpaceChart('diskSpaceChart', totalDiskSpace, freeDiskSpace);
+
+  // Check each package
+  
 });

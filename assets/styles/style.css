@@ -1,0 +1,4 @@
+.img-muted {
+  transition: 2s;
+  filter: grayscale(1);
+}

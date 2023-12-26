@@ -58,6 +58,13 @@ class Redis extends Package implements Linux {
         return $checkOutput === null;
     }
     public function directory() {
+        $dir = "";
+        if ($this->exists()) {
+            $command = Linux::FIND_COMMAND . " " . $this->packageName;
+            $output = $this->execute($command);
+            $dir = $output;
+        }
+        return $dir;
     }
     public function purge() {
     }
