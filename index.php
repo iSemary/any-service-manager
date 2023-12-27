@@ -1,22 +1,12 @@
 <?php
 
-use Isemary\AnyServiceManager\Manager\Manager;
+
 use Isemary\AnyServiceManager\OS\OperatingSystem;
-use Isemary\AnyServiceManager\Packages\Redis;
 
 require_once "./autoload.php";
 
-$template = $twig->load('pages/index.twig');
-
 $operatingSystem = new OperatingSystem();
 
-
-$manager = (new Manager)->checkPackagesStatus();
-
-die(var_dump($manager));
-// $redis = (new Redis)->uninstall();
-// var_dump($redis);
-// die();
 $packages = [
     [
         'title' => 'Redis',
@@ -44,6 +34,7 @@ $packages = [
     ],
 ];
 
+$template = $twig->load('pages/index.twig');
 echo $template->render([
     'operating_system' => $operatingSystem->getInfo(),
     'packages' => $packages

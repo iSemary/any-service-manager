@@ -2,21 +2,56 @@
 {% block content %}
 	<div class="card">
 		<div class="card-body">
+			<h5>Statistics</h5>
 			<div class="row w-100">
 				<div class="col-6">
 					<ul class="list-group">
 						<li class="list-group-item d-flex justify-content-between align-items-center">
-							Operating System
+							<span>
+								<i class="fab fa-linux mr-1"></i>Operating System
+							</span>
 							<span class="badge badge-primary badge-pill">
-								{{ operating_system.name }}
+								{{ operating_system.name ~ " " ~ operating_system.release ~ " " ~ operating_system.machine}}
 							</span>
 						</li>
 						<li class="list-group-item d-flex justify-content-between align-items-center">
-							Host
+							<span>
+								<i class="fas fa-user-circle mr-1"></i>Host
+							</span>
 							<span class="badge badge-primary badge-pill">
 								{{ operating_system.host }}
 							</span>
 						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<span>
+								<i class="fas fa-wifi mr-1"></i>Network
+							</span>
+							<span>
+								<span class="badge badge-primary badge-pill">
+									Local:
+									{{ operating_system.network.local }}
+								</span>
+								<span class="badge badge-primary badge-pill">
+									Public:
+									{{ operating_system.network.public }}
+								</span>
+							</span>
+						</li>
+
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<span>
+								<i class="fas fa-hdd mr-1"></i>Disk
+							</span>
+							<span>
+								<span class="badge badge-primary badge-pill">
+									{{ (operating_system.disk.free_space / (1024 * 1024 * 1024)) | number_format(2, '.', '') }}
+									/
+									{{ (operating_system.disk.total_space / (1024 * 1024 * 1024)) | number_format(2, '.', '') }}
+									GB
+								</span>
+							</span>
+						</li>
+
 					</ul>
 				</div>
 				<div class="col-6">
@@ -24,12 +59,13 @@
 				</div>
 			</div>
 			<hr/>
-			<div class="row w-100">
+			<h5>Packages Status</h5>
+			<div class="packages row w-100">
 				{% for package in packages %}
-					<div class="col-3 bg-light text-center">
-						<h6 class="font-weight-bold">{{ package.title }}</h6>
-						<img src="{{ package.icon }}" class="img-muted" width="50px" height="50px" alt="{{ package.alt }}"/>
-						<p class="text-muted mt-2">{{ package.status }}</p>
+					<div class="package-box col-3 py-2  bg-light text-center" id="{{ package.title }}">
+						<h6 class="">{{ package.title }}</h6>
+						<img src="{{ package.icon }}" class="package-img img-muted" width="50px" height="50px" alt="{{ package.alt }}"/>
+						<p class="text-muted font-weight-bold package-status">{{ package.status }}</p>
 					</div>
 				{% endfor %}
 			</div>

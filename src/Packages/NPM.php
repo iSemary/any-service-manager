@@ -7,25 +7,26 @@ use Isemary\AnyServiceManager\Abstractor\Package;
 use Isemary\AnyServiceManager\Commands\Linux;
 use Isemary\AnyServiceManager\Interfaces\PackageStatus;
 
-class Redis extends Package implements Linux {
+class NPM extends Package implements Linux {
     private $packageName;
     private $password;
 
     public function __construct() {
-        $this->packageName = "redis-server";
+        $this->packageName = "npm";
         $this->password = $_ENV['ROOT_PASSWORD'];
     }
 
     public function exists() {
-        $check = Linux::SYSTEMCTL_STATUS . " " . $this->packageName;
+        $check = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
         $output = $this->execute($check);
         // Package not found
         if (!$output) {
             return PackageStatus::UNINSTALLED;
+        } else {
+            return PackageStatus::ACTIVE;
         }
-        // check if 'Active: active' exists in the output
-        return (strpos($output, 'Active: active') !== false) ? PackageStatus::ACTIVE : PackageStatus::INACTIVE;
     }
+
     public function install() {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::INSTALL_COMMAND);
 

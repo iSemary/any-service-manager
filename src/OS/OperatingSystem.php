@@ -10,6 +10,7 @@ class OperatingSystem {
         $data['machine'] = php_uname('m');
 
         $data['disk'] = $this->getDisk();
+        $data['network'] = $this->getNetwork();
         return $data;
     }
 
@@ -19,5 +20,17 @@ class OperatingSystem {
         return $data;
     }
 
-    
+    private function getNetwork(): array {
+        $ipAddress = exec('hostname -I');
+        $ipAddress = explode(" ", $ipAddress);
+        $localIP = $ipAddress[0];
+
+        $publicIP = file_get_contents("http://ipecho.net/plain");
+
+        $data = [
+            'local' => $localIP,
+            'public' => $publicIP
+        ];
+        return $data;
+    }
 }

@@ -7,12 +7,12 @@ use Isemary\AnyServiceManager\Abstractor\Package;
 use Isemary\AnyServiceManager\Commands\Linux;
 use Isemary\AnyServiceManager\Interfaces\PackageStatus;
 
-class Redis extends Package implements Linux {
+class Elasticsearch extends Package implements Linux {
     private $packageName;
     private $password;
 
     public function __construct() {
-        $this->packageName = "redis-server";
+        $this->packageName = "elasticsearch";
         $this->password = $_ENV['ROOT_PASSWORD'];
     }
 
