@@ -8,7 +8,9 @@
 			</a>
 		</li>
 		<li class="nav-item d-none mt-2 d-sm-inline-block">
-			<code class=""><i class="fas fa-server mr-1"></i>{{ operating_system.name ~ "@" ~ operating_system.host}}</code>
+			<code class="">
+				<i class="fas fa-server mr-1"></i>
+				{{ operating_system.name ~ "@" ~ operating_system.host}}</code>
 		</li>
 	</ul>
 
@@ -18,6 +20,17 @@
 			<a class="nav-link" data-widget="fullscreen" href="#" role="button">
 				<i class="fas fa-expand-arrows-alt"></i>
 			</a>
+		</li>
+
+		<li class="nav-item">
+			<button class="btn nav-link text-warning" title="Restart" onclick="restart();">
+				<i class="fas fa-sync-alt"></i>
+			</button>
+		</li>
+		<li class="nav-item">
+			<button class="btn nav-link text-danger" title="Power Off" onclick="powerOff();">
+				<i class="fas fa-power-off"></i>
+			</button>
 		</li>
 	</ul>
 </nav>
