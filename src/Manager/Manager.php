@@ -13,6 +13,14 @@ class Manager {
         $this->packages = $this->setPackages();
     }
 
+    /**
+     * The function "setPackages" retrieves the class names from PHP files in a specified directory and
+     * returns them as an array, or returns false if the directory does not exist.
+     * 
+     * @return array|bool an array of class names if the packages directory exists and contains PHP
+     * files. If the packages directory does not exist or does not contain any PHP files, it returns
+     * false.
+     */
     private function setPackages(): array|bool {
         $packages = [];
         if (is_dir($this->packagesPath)) {
@@ -57,6 +65,13 @@ class Manager {
         return false;
     }
 
+    /**
+     * The function checks if a given package is valid by checking if it exists in an array of packages.
+     * 
+     * @param string package A string representing the package name that needs to be checked for validity.
+     * 
+     * @return bool a boolean value, either true or false.
+     */
     public function isValidPackage(string $package): bool {
         return in_array($package, $this->packages);
     }

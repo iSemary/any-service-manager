@@ -110,7 +110,7 @@ class NPM extends Package implements Linux {
             return null;
         }
         $formattedOutput = implode("\n", $output);
-        $this->logger->write($formattedOutput, "Elasticsearch");
+        $this->logger->write($formattedOutput, "NPM");
         return $formattedOutput;
     }
 }

@@ -1,3 +1,4 @@
+// render the disk space chat based on the data from the API
 function renderDiskSpaceChart(chartID, totalSpace, freeSpace) {
   var echarts = window.echarts;
   var chartDom = document.getElementById(chartID);
@@ -39,6 +40,7 @@ function renderDiskSpaceChart(chartID, totalSpace, freeSpace) {
   option && myChart.setOption(option);
 }
 
+// Get and check each package status
 function checkPackagesStatus() {
   $.ajax({
     type: 'POST',
@@ -66,16 +68,19 @@ function checkPackagesStatus() {
   });
 }
 
+// Sets the package card as Active
 function setPackageActive(name) {
   $('#' + name + ' .package-img').removeClass("img-muted");
   $('#' + name + ' .package-status').html('Active').addClass("text-success").removeClass("text-muted");
 }
 
+// Sets the package card as In Active
 function setPackageInActive(name) {
   $('#' + name + ' .package-img').addClass("img-muted");
   $('#' + name + ' .package-status').html('In Active').addClass("text-primary").removeClass("text-muted");
 }
 
+// Sets the package card as Stopped
 function setPackageStopped(name) {
   $('#' + name + ' .package-img').addClass("img-muted");
   $('#' + name + ' .package-status').html('Stopped').addClass("text-danger").removeClass("text-muted");

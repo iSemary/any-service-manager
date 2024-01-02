@@ -10,7 +10,7 @@
 				<ul class="nav nav-tabs packages border-0" id="packageTabs" role="tablist">
 					{% for package in packages %}
 						<li class="nav-item">
-							<a class="nav-link {{ uri_package is not null ? (uri_package == package ? " active" : " ") : (loop.index == 1 ? " active" : " ") }}" id="{{ package }}Tab" data-bs-toggle="tab" href="#{{ package }}" role="tab" aria-controls="{{ package }}" aria-selected="true">{{ package }}</a>
+							<a class="nav-link {{ uri_package is not null ? (uri_package == package ? " active nav-log-active" : " ") : (loop.index == 1 ? " active nav-log-active" : " ") }}" id="{{ package }}Tab" onclick="showLog('{{ package }}')" data-bs-toggle="tab" href="#{{ package }}" role="tab" data-package-name="{{ package }}" aria-selected="true">{{ package }}</a>
 						</li>
 					{% endfor %}
 				</ul>
@@ -24,11 +24,11 @@
 							</h5>
 							<hr/>
 							<div class="log-content">
-								<div id="{{package}}Log">
+								<code id="{{package}}Log">
 									<div class="log-loader text-center">
 										<span class="loader"></span>
 									</div>
-								</div>
+								</code>
 							</div>
 						</div>
 					{% endfor %}
