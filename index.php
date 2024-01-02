@@ -1,41 +1,26 @@
 <?php
 
-
+use Isemary\AnyServiceManager\Manager\Manager;
 use Isemary\AnyServiceManager\OS\OperatingSystem;
 
 require_once "./autoload.php";
 
 $operatingSystem = new OperatingSystem();
+$systemPackages = (new Manager())->packages;
 
-$packages = [
-    [
-        'title' => 'Redis',
-        'icon' => 'assets/images/icons/redis.png',
-        'alt' => 'redis',
-        'status' => 'Checking',
-    ],
-    [
-        'title' => 'NPM',
-        'icon' => 'assets/images/icons/npm.png',
-        'alt' => 'npm',
-        'status' => 'Checking',
-    ],
-    [
-        'title' => 'Elasticsearch',
-        'icon' => 'assets/images/icons/elasticsearch.png',
-        'alt' => 'elasticsearch',
-        'status' => 'Checking',
-    ],
-    [
-        'title' => 'MySQL',
-        'icon' => 'assets/images/icons/mysql.png',
-        'alt' => 'mysql',
-        'status' => 'Checking',
-    ],
-];
+$packages = [];
+foreach ($systemPackages as $systemPackage) {
+    $packages[] = [
+        'title' => $systemPackage,
+        'icon' => 'assets/images/icons/' . strtolower($systemPackage) . '.png',
+        'alt' =>  strtolower($systemPackage),
+        'status' => 'Checking'
+    ];
+}
 
 $template = $twig->load('pages/index.twig');
 echo $template->render([
-    'operating_system' => $operatingSystem->getInfo(),
+    'title' => "Home",
+    'operating_system' => $operatingSystem->getInfo(['disk', 'network']),
     'packages' => $packages
 ]);

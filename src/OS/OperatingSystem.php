@@ -10,14 +10,14 @@ class OperatingSystem {
         $this->password = $_ENV['ROOT_PASSWORD'];
     }
 
-    public function getInfo(): array {
+    public function getInfo(array $extraFields = []): array {
         $data['name'] = php_uname('s');
         $data['host'] = php_uname('n');
         $data['release'] = php_uname('r');
         $data['machine'] = php_uname('m');
 
-        $data['disk'] = $this->getDisk();
-        $data['network'] = $this->getNetwork();
+        if (in_array("disk", $extraFields)) $data['disk'] = $this->getDisk();
+        if (in_array("network", $extraFields)) $data['network'] = $this->getNetwork();
         return $data;
     }
 

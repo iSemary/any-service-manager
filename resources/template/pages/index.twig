@@ -64,11 +64,16 @@
 				{% for package in packages %}
 					<div class="package-box col-3 py-2  bg-light text-center" id="{{ package.title }}">
 						<h6 class="">{{ package.title }}</h6>
-						<img src="{{ package.icon }}" class="package-img img-muted" width="50px" height="50px" alt="{{ package.alt }}"/>
+						<a href="/package-manager.php?package={{ package.title }}">
+							<img src="{{ package.icon }}" class="package-img img-muted" width="50px" height="50px" alt="{{ package.alt }}"/>
+						</a>
 						<p class="text-muted font-weight-bold package-status">{{ package.status }}</p>
 					</div>
 				{% endfor %}
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block scripts %}
+	 <script src="/assets/scripts/pages/index.js"></script>
 {% endblock %}

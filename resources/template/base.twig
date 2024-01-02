@@ -6,9 +6,10 @@
 		<link rel="stylesheet" href="assets/plugins/adminlte/css/adminlte.min.css">
 		<link rel="stylesheet" href="assets/plugins/jquery-ui/jquery-ui.min.css">
 		<link rel="stylesheet" href="assets/plugins/fontawesome-5/css/all.min.css">
+		<link rel="stylesheet" href="assets/plugins/bootstrap-5.0.2/css/bootstrap.min.css">
 		<link rel="stylesheet" href="assets/styles/style.css">
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
-		<title>{{ title }}</title>
+		<title>{{ "ASM | " ~ title }}</title>
 	</head>
 	<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 		<div
@@ -27,10 +28,11 @@
 		 <script src="assets/plugins/jquery/jquery.min.js"></script>
 	     <script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 		 <script src="assets/plugins/adminlte/js/adminlte.min.js"></script>
+		 <script src="assets/plugins/bootstrap-5.0.2/js/bootstrap.min.js"></script>
 		 <script src="assets/plugins/apache-charts/echarts.min.js"></script>
 		 <script src="assets/plugins/sweetalert2/sweetalert.min.js"></script>
 		 <script src="assets/scripts/constants.js"></script>
 		 <script src="assets/scripts/app.js"></script>
-		 <script src="assets/scripts/index.js"></script>
+		{% block scripts %}{% endblock %} 
 	</body>
 </html>

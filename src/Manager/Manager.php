@@ -44,14 +44,20 @@ class Manager {
                 $packageNamespace = $this->packagesNamespace . $package;
                 $packageInstance = new $packageNamespace();
                 $status = $packageInstance->exists();
+                $version = $packageInstance->version();
                 $statuses[] = [
                     'name' => $package,
-                    'status' => $status
+                    'status' => $status,
+                    'version' => $version,
                 ];
             }
             return $statuses;
         }
 
         return false;
+    }
+
+    public function isValidPackage(string $package): bool {
+        return in_array($package, $this->packages);
     }
 }

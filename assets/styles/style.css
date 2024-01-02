@@ -40,3 +40,43 @@
   background-color: #007bff;
   color: #fff;
 }
+
+.f-12 {
+  font-size: 12px;
+}
+
+.f-15 {
+  font-size: 15px;
+}
+
+.packages.nav-tabs {
+  border-right: 1px solid #65656554;
+}
+
+.loader {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #212529;
+  box-shadow: 32px 0 #212529, -32px 0 #212529;
+  position: relative;
+  animation: flash 0.5s ease-out infinite alternate;
+}
+
+@keyframes flash {
+  0% {
+    background-color: #FFF2;
+    box-shadow: 32px 0 #FFF2, -32px 0 #212529;
+  }
+
+  50% {
+    background-color: #212529;
+    box-shadow: 32px 0 #FFF2, -32px 0 #FFF2;
+  }
+
+  100% {
+    background-color: #FFF2;
+    box-shadow: 32px 0 #212529, -32px 0 #FFF2;
+  }
+}

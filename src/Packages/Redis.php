@@ -6,14 +6,17 @@ use Exception;
 use Isemary\AnyServiceManager\Abstractor\Package;
 use Isemary\AnyServiceManager\Commands\Linux;
 use Isemary\AnyServiceManager\Interfaces\PackageStatus;
+use Isemary\AnyServiceManager\Logger\Logger;
 
 class Redis extends Package implements Linux {
-    private $packageName;
-    private $password;
+    private string $packageName;
+    private string $password;
+    private Logger $logger;
 
     public function __construct() {
         $this->packageName = "redis-server";
         $this->password = $_ENV['ROOT_PASSWORD'];
+        $this->logger = new Logger;
     }
 
     public function exists() {
@@ -26,6 +29,18 @@ class Redis extends Package implements Linux {
         // check if 'Active: active' exists in the output
         return (strpos($output, 'Active: active') !== false) ? PackageStatus::ACTIVE : PackageStatus::INACTIVE;
     }
+
+    public function version() {
+        $check = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
+        $output = $this->execute($check);
+        // Package not found
+        if (!$output) {
+            return null;
+        } else {
+            return $output;
+        }
+    }
+
     public function install() {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::INSTALL_COMMAND);
 
@@ -42,6 +57,7 @@ class Redis extends Package implements Linux {
         // If the package package exists or service exists
         return $checkOutput === null;
     }
+
     public function uninstall() {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::UNINSTALL_COMMAND);
 
@@ -92,6 +108,8 @@ class Redis extends Package implements Linux {
         if (!count($output)) {
             return null;
         }
-        return implode("\n", $output);
+        $formattedOutput = implode("\n", $output);
+        $this->logger->write($formattedOutput, "Redis");
+        return $formattedOutput;
     }
 }

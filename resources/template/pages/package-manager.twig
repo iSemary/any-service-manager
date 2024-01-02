@@ -1,34 +1,61 @@
 {% extends "base.twig" %}
 {% block content %}
-	<div class="row">
-		<div class="col-3">
-			<ul class="nav nav-tabs border-0" id="packageTabs" role="tablist">
-				<li class="nav-item">
-					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-				</li>
-			</ul>
-		</div>
-		<div class="col-9">
-			<div class="tab-content" id="packageContent">
-				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-					<h3>Home Content</h3>
-					<p>This is the content of the Home tab.</p>
-				</div>
-				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-					<h3>Profile Content</h3>
-					<p>This is the content of the Profile tab.</p>
-				</div>
-				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-					<h3>Contact Content</h3>
-					<p>This is the content of the Contact tab.</p>
+	<div class="p-3">
+		<div class="row">
+			<div class="col-3">
+				<h4>
+					<i class="fas fa-cubes"></i>
+					Package Manager
+				</h4>
+				<ul class="nav nav-tabs packages border-0" id="packageTabs" role="tablist">
+					{% for package in packages %}
+						<li class="nav-item">
+							<a class="nav-link {{ uri_package is not null ? (uri_package == package.name ? " active" : " ") : (loop.index == 1 ? " active" : " ") }}" id="{{ package.name }}Tab" data-bs-toggle="tab" href="#{{ package.name }}" role="tab" aria-controls="{{ package.name }}" aria-selected="true">{{ package.name }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-9">
+				<div class="tab-content" id="packageTabsContent">
+					{% for package in packages %}
+						<div class="tab-pane fade show {{ uri_package is not null ? (uri_package == package.name ? " active" : " ") : (loop.index == 1 ? " active" : " ") }}" id="{{ package.name }}" role="tabpanel" aria-labelledby="{{ package.name }}Tab">
+							<h5>
+								<i class="fas fa-cube"></i>
+								{{ package.name }}
+								<span>
+									<small class="f-15">{{ package.version }}</small>
+								</span>
+							</h5>
+							<hr/>
+							<div class="">
+								<button class="btn btn-sm btn-success" id="{{ package.name }}InstallBtn" onclick="install('{{ package.name }}');" type="button" {{ package.status == 200 or package.status == 201 ? "disabled" : "" }}>
+									<i class="fas fa-cloud-download-alt"></i>
+									Install
+								</button>
+								<button class="btn btn-sm btn-primary" id="{{ package.name }}ReinstallBtn" onclick="reinstall('{{ package.name }}');" type="button" {{ package.status == 200 or package.status == 201 ? "" : "disabled" }}>
+									<i class="fas fa-sync"></i>
+									Re-Install
+								</button>
+								<button class="btn btn-sm btn-danger" id="{{ package.name }}UninstallBtn" onclick="uninstall('{{ package.name }}');" type="button" {{ package.status == 200 or package.status == 201 ? "" : "disabled" }}>
+									<i class="fas fa-ban"></i>
+									Uninstall
+								</button>
+								<button class="btn btn-sm btn-outline-danger" id="{{ package.name }}PurgeBtn" onclick="purge('{{ package.name }}');" type="button">
+									<i class="far fa-trash-alt"></i>
+									Purge
+								</button>
+								<button class="btn btn-sm btn-info text-white" id="{{ package.name }}LogBtn" onclick="log('{{ package.name }}');" type="button">
+									<i class="far fa-file-alt"></i>
+									Logs
+								</button>
+							</div>
+						</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block scripts %}
+	 <script src="/assets/scripts/pages/package-manager.js"></script>
 {% endblock %}
