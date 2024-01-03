@@ -2,7 +2,6 @@
 
 namespace Isemary\AnyServiceManager\Packages;
 
-use Exception;
 use Isemary\AnyServiceManager\Abstractor\Package;
 use Isemary\AnyServiceManager\Commands\Linux;
 use Isemary\AnyServiceManager\Interfaces\PackageStatus;
@@ -19,10 +18,20 @@ class Elasticsearch extends Package implements Linux {
         $this->logger = new Logger;
     }
 
-    public function exists() {
+    /**
+     * The function checks if a package exists and returns its status as either active, inactive, or
+     * uninstalled.
+     * 
+     * @return int an integer value. The value returned depends on the conditions met in the function. If
+     * the output is empty, the function returns the constant value `PackageStatus::UNINSTALLED`. If the
+     * output contains the string 'Active: active', the function returns the constant value
+     * `PackageStatus::ACTIVE`. Otherwise, the function returns the constant value
+     * `PackageStatus::INACTIVE`.
+     */
+    public function exists(): int {
         $check = Linux::SYSTEMCTL_STATUS . " " . $this->packageName;
         $output = $this->execute($check);
-        // Package not found
+        // If the output is empty, the package is not found
         if (!$output) {
             return PackageStatus::UNINSTALLED;
         }
@@ -30,10 +39,15 @@ class Elasticsearch extends Package implements Linux {
         return (strpos($output, 'Active: active') !== false) ? PackageStatus::ACTIVE : PackageStatus::INACTIVE;
     }
 
-    public function version() {
+    /**
+     * The function returns the version of a PHP package if it is found, otherwise it returns null.
+     * 
+     * @return ?string a string value or null.
+     */
+    public function version(): ?string {
         $check = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
         $output = $this->execute($check);
-        // Package not found
+        // If the output is empty, the package is not found
         if (!$output) {
             return null;
         } else {
@@ -41,7 +55,14 @@ class Elasticsearch extends Package implements Linux {
         }
     }
 
-    public function install() {
+    /**
+     * The function "install" checks if a package or service exists and returns true if it does,
+     * otherwise it returns false.
+     * 
+     * @return bool a boolean value. It returns true if the package exists or service exists, and false
+     * if the command execution fails or the package/service does not exist.
+     */
+    public function install(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::INSTALL_COMMAND);
 
         $output = $this->execute($command);
@@ -57,7 +78,16 @@ class Elasticsearch extends Package implements Linux {
         // If the package package exists or service exists
         return $checkOutput === null;
     }
-    public function uninstall() {
+    /**
+     * The function uninstalls a package in Linux by executing a command and checking if the package
+     * executable or service still exists.
+     * 
+     * @return bool a boolean value. It returns true if the package executable or service is not found,
+     * indicating that the uninstallation was successful. It returns false if the command execution failed
+     * or if the package executable or service still exists, indicating that the uninstallation was not
+     * successful.
+     */
+    public function uninstall(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::UNINSTALL_COMMAND);
 
         $output = $this->execute($command);
@@ -74,7 +104,12 @@ class Elasticsearch extends Package implements Linux {
         return $checkOutput === null;
     }
 
-    public function directory() {
+    /**
+     * The function "directory" returns the directory path of a package if it exists.
+     * 
+     * @return string a string that represents the directory of the package.
+     */
+    public function directory(): string {
         $dir = "";
         if ($this->exists()) {
             $command = Linux::FIND_COMMAND . " " . $this->packageName;
@@ -84,7 +119,15 @@ class Elasticsearch extends Package implements Linux {
         return $dir;
     }
 
-    public function purge() {
+    /**
+     * The function "purge" in PHP executes a command to remove a package and checks if the package
+     * executable or service still exists to determine if it was successfully purged.
+     * 
+     * @return bool a boolean value. It returns true if the package executable or service is not found,
+     * indicating that the purge was successful. It returns false if the command execution failed or if the
+     * package executable or service still exists, indicating that the purge was not successful.
+     */
+    public function purge(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::PURGE_COMMAND);
 
         $output = $this->execute($command);
@@ -101,7 +144,17 @@ class Elasticsearch extends Package implements Linux {
         return $checkOutput === null;
     }
 
-    public function execute($command) {
+    /**
+     * The function executes a command and returns the output as a formatted string, while also logging the
+     * output.
+     * 
+     * @param command The `` parameter is a string that represents the command to be executed. It
+     * is passed to the `exec()` function, which runs the command in the shell. The output of the command
+     * is captured in the `` array.
+     * 
+     * @return ?string a formatted output string.
+     */
+    public function execute($command): ?string {
         $output = null;
         exec($command, $output, $returnCode);
         if (!count($output)) {

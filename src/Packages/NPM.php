@@ -2,7 +2,6 @@
 
 namespace Isemary\AnyServiceManager\Packages;
 
-use Exception;
 use Isemary\AnyServiceManager\Abstractor\Package;
 use Isemary\AnyServiceManager\Commands\Linux;
 use Isemary\AnyServiceManager\Interfaces\PackageStatus;
@@ -19,10 +18,16 @@ class NPM extends Package implements Linux {
         $this->logger = new Logger;
     }
 
-    public function exists() {
+    /**
+     * The exists() function checks if a package exists on a Linux system and returns its status.
+     * 
+     * @return int an integer value. If the package is not found, it returns the constant
+     * `PackageStatus::UNINSTALLED`, otherwise it returns the constant `PackageStatus::ACTIVE`.
+     */
+    public function exists(): int {
         $check = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
         $output = $this->execute($check);
-        // Package not found
+        // If the output is empty, the package is not found
         if (!$output) {
             return PackageStatus::UNINSTALLED;
         } else {
@@ -30,18 +35,32 @@ class NPM extends Package implements Linux {
         }
     }
 
-    public function version() {
-        $check = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
-        $output = $this->execute($check);
-        // Package not found
+    /**
+     * The version() function checks the version of a package and returns it, or returns null if the
+     * package is not found.
+     * 
+     * @return string|null The version of the package or null if not found.
+     */
+    public function version(): ?string {
+        $checkCommand = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
+        $output = $this->execute($checkCommand);
+        // If the output is empty, the package is not found
         if (!$output) {
             return null;
         } else {
+            // Return the version information
             return $output;
         }
     }
 
-    public function install() {
+    /**
+     * The function "install" checks if a package or service exists and returns true if it does, otherwise
+     * it returns false.
+     * 
+     * @return bool a boolean value. It returns true if the package exists or service exists, and false if
+     * the command execution fails or the package does not exist.
+     */
+    public function install(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::INSTALL_COMMAND);
 
         $output = $this->execute($command);
@@ -58,7 +77,16 @@ class NPM extends Package implements Linux {
         // If the package package exists or service exists
         return $checkOutput === null;
     }
-    public function uninstall() {
+    /**
+     * The function uninstalls a package in Linux using a sudo command and checks if the package executable
+     * or service is no longer found to confirm successful uninstallation.
+     * 
+     * @return bool a boolean value. It returns true if the package executable or service is not found,
+     * indicating that the uninstallation was successful. It returns false if the command execution failed
+     * or if the package executable or service still exists, indicating that the uninstallation was not
+     * successful.
+     */
+    public function uninstall(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::UNINSTALL_COMMAND);
 
         $output = $this->execute($command);
@@ -75,7 +103,12 @@ class NPM extends Package implements Linux {
         return $checkOutput === null;
     }
 
-    public function directory() {
+    /**
+     * The function "directory" returns the directory path of a package if it exists.
+     * 
+     * @return string a string that represents the directory of the package.
+     */
+    public function directory(): string {
         $dir = "";
         if ($this->exists()) {
             $command = Linux::FIND_COMMAND . " " . $this->packageName;
@@ -85,7 +118,15 @@ class NPM extends Package implements Linux {
         return $dir;
     }
 
-    public function purge() {
+    /**
+     * The function "purge" in PHP executes a command to remove a package and checks if the package
+     * executable or service still exists to determine if it was successfully purged.
+     * 
+     * @return bool a boolean value. It returns true if the package executable or service is not found,
+     * indicating that the purge was successful. It returns false if the command execution failed or if the
+     * package executable or service still exists, indicating that the purge was not successful.
+     */
+    public function purge(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::PURGE_COMMAND);
 
         $output = $this->execute($command);
@@ -103,7 +144,18 @@ class NPM extends Package implements Linux {
         return $checkOutput === null;
     }
 
-    public function execute($command) {
+    /**
+     * The function executes a command and returns the output as a formatted string, while also logging the
+     * output.
+     * 
+     * @param string command The `command` parameter is a string that represents the command to be
+     * executed. It can be any valid command that can be executed in the command line, such as running a
+     * script, installing a package, or executing a system command.
+     * 
+     * @return ?string a formatted output string if there is any output from the executed command. If there
+     * is no output, it returns null.
+     */
+    public function execute(string $command): ?string {
         $output = null;
         exec($command, $output, $returnCode);
         if (!count($output)) {
