@@ -12,4 +12,7 @@ interface Linux {
     const FIND_COMMAND = "which";
     const POWER_OFF = "/sbin/poweroff";
     const RESTART = "sudo /sbin/reboot";
+    const NPM_INSTALL_COMMAND = "npm install %s -g";
+    const NPM_REMOVE_COMMAND = "npm remove %s -g";
+    const NPM_PURGE_COMMAND = "npm uninstall -g";
 }

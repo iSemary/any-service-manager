@@ -33,7 +33,9 @@ trait CommandExecutorTrait {
         }
 
         $formattedOutput = implode("\n", $output);
-        $this->logger->write($formattedOutput, static::class);
+        $packageClass = static::class;
+        $packageName = basename(str_replace('\\', '/', $packageClass));
+        $this->logger->write($formattedOutput, $packageName);
 
         return $formattedOutput;
     }
