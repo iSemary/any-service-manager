@@ -5,17 +5,17 @@ namespace Isemary\AnyServiceManager\Packages;
 use Isemary\AnyServiceManager\Abstractor\Package;
 use Isemary\AnyServiceManager\Commands\Linux;
 use Isemary\AnyServiceManager\Interfaces\PackageStatus;
-use Isemary\AnyServiceManager\Logger\Logger;
+use Isemary\AnyServiceManager\Traits\CommandExecutorTrait;
 
 class Elasticsearch extends Package implements Linux {
+    use CommandExecutorTrait;
+
     private string $packageName;
     private string $password;
-    private Logger $logger;
 
     public function __construct() {
         $this->packageName = "elasticsearch";
         $this->password = $_ENV['ROOT_PASSWORD'];
-        $this->logger = new Logger;
     }
 
     /**
@@ -29,8 +29,8 @@ class Elasticsearch extends Package implements Linux {
      * `PackageStatus::INACTIVE`.
      */
     public function exists(): int {
-        $check = Linux::SYSTEMCTL_STATUS . " " . $this->packageName;
-        $output = $this->execute($check);
+        $checkCommand = Linux::SYSTEMCTL_STATUS . " " . $this->packageName;
+        $output = $this->executeCommand($checkCommand);
         // If the output is empty, the package is not found
         if (!$output) {
             return PackageStatus::UNINSTALLED;
@@ -46,7 +46,7 @@ class Elasticsearch extends Package implements Linux {
      */
     public function version(): ?string {
         $check = $this->packageName . " " . Linux::CHECK_VERSION_COMMAND;
-        $output = $this->execute($check);
+        $output = $this->executeCommand($check);
         // If the output is empty, the package is not found
         if (!$output) {
             return null;
@@ -65,7 +65,7 @@ class Elasticsearch extends Package implements Linux {
     public function install(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::INSTALL_COMMAND);
 
-        $output = $this->execute($command);
+        $output = $this->executeCommand($command);
         // Command execution failed
         if ($output === null) {
             return false;
@@ -73,7 +73,7 @@ class Elasticsearch extends Package implements Linux {
 
         // Check if the package exists or service exists
         $checkCommand = sprintf("which %s", escapeshellarg($this->packageName));
-        $checkOutput = $this->execute($checkCommand);
+        $checkOutput = $this->executeCommand($checkCommand);
 
         // If the package package exists or service exists
         return $checkOutput === null;
@@ -90,7 +90,7 @@ class Elasticsearch extends Package implements Linux {
     public function uninstall(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::UNINSTALL_COMMAND);
 
-        $output = $this->execute($command);
+        $output = $this->executeCommand($command);
         // Command execution failed
         if ($output === null) {
             return false;
@@ -98,7 +98,7 @@ class Elasticsearch extends Package implements Linux {
 
         // Check if the package executable or service doesn't exist anymore
         $checkCommand = sprintf("which %s", escapeshellarg($this->packageName));
-        $checkOutput = $this->execute($checkCommand);
+        $checkOutput = $this->executeCommand($checkCommand);
 
         // If the package executable or service is not found, consider it uninstalled
         return $checkOutput === null;
@@ -113,7 +113,7 @@ class Elasticsearch extends Package implements Linux {
         $dir = "";
         if ($this->exists()) {
             $command = Linux::FIND_COMMAND . " " . $this->packageName;
-            $output = $this->execute($command);
+            $output = $this->executeCommand($command);
             $dir = $output;
         }
         return $dir;
@@ -130,7 +130,7 @@ class Elasticsearch extends Package implements Linux {
     public function purge(): bool {
         $command = sprintf("echo '%s' | sudo -S %s $this->packageName -y", $this->password, Linux::PURGE_COMMAND);
 
-        $output = $this->execute($command);
+        $output = $this->executeCommand($command);
         // Command execution failed
         if ($output === null) {
             return false;
@@ -138,30 +138,9 @@ class Elasticsearch extends Package implements Linux {
 
         // Check if the package executable or service doesn't exist anymore
         $checkCommand = sprintf("which %s", escapeshellarg($this->packageName));
-        $checkOutput = $this->execute($checkCommand);
+        $checkOutput = $this->executeCommand($checkCommand);
 
         // If the package executable or service is not found, consider it purged
         return $checkOutput === null;
-    }
-
-    /**
-     * The function executes a command and returns the output as a formatted string, while also logging the
-     * output.
-     * 
-     * @param command The `` parameter is a string that represents the command to be executed. It
-     * is passed to the `exec()` function, which runs the command in the shell. The output of the command
-     * is captured in the `` array.
-     * 
-     * @return ?string a formatted output string.
-     */
-    public function execute($command): ?string {
-        $output = null;
-        exec($command, $output, $returnCode);
-        if (!count($output)) {
-            return null;
-        }
-        $formattedOutput = implode("\n", $output);
-        $this->logger->write($formattedOutput, "Elasticsearch");
-        return $formattedOutput;
     }
 }
