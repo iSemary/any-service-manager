@@ -29,6 +29,7 @@ class OperatingSystem {
         $data['host'] = php_uname('n');
         $data['release'] = php_uname('r');
         $data['machine'] = php_uname('m');
+        $data['internet_connection'] = $this->checkInternetConnection();
 
         if (in_array("disk", $extraFields)) $data['disk'] = $this->getDisk();
         if (in_array("network", $extraFields)) $data['network'] = $this->getNetwork();
@@ -50,7 +51,7 @@ class OperatingSystem {
     /**
      * The function `getNetwork()` retrieves the local and public IP addresses of the server.
      * 
-     * @return array an array with two keys: 'local' and 'public'. The value of 'local' is the local IP
+     * @return array an array with 3 keys: 'local IP', 'public IP' and 'internet connection'. The value of 'local' is the local IP
      * address of the server, and the value of 'public' is the public IP address of the server.
      */
     private function getNetwork(): array {
@@ -58,11 +59,9 @@ class OperatingSystem {
         $ipAddress = explode(" ", $ipAddress);
         $localIP = $ipAddress[0];
 
-        $publicIP = file_get_contents("http://ipecho.net/plain");
-
         $data = [
             'local' => $localIP,
-            'public' => $publicIP
+            'public' => $this->getPublicIP(),
         ];
         return $data;
     }
@@ -98,5 +97,36 @@ class OperatingSystem {
         } else {
             return false;
         }
+    }
+
+    /**
+     * The function checks if there is an internet connection by attempting to open a socket connection to
+     * www.google.com.
+     * 
+     * @return bool a boolean value. It returns true if there is an internet connection and false if there
+     * is no internet connection.
+     */
+    public function checkInternetConnection(): bool {
+        $connected = @fsockopen("www.google.com", 80);
+        if ($connected) {
+            fclose($connected);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * The function "getPublicIP" returns the public IP address of the server if there is an internet
+     * connection, otherwise it returns "-".
+     * 
+     * @return string a string value. If there is an internet connection, it will return the public IP
+     * address obtained from the "http://ipecho.net/plain" URL. If there is no internet connection, it will
+     * return a dash ("-").
+     */
+    private function getPublicIP(): string {
+        if ($this->checkInternetConnection()) {
+            return file_get_contents("http://ipecho.net/plain");
+        }
+        return "-";
     }
 }

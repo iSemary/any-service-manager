@@ -9,3 +9,7 @@ $dotenv->load();
 // Create a Twig loader and environment
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/resources/template');
 $twig = new \Twig\Environment($loader);
+
+// Force display all errors
+error_reporting(E_ALL);
+ini_set('display_errors', '1');

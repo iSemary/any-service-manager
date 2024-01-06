@@ -7,7 +7,7 @@
 					<i class="far fa-file-alt"></i>
 					Logs
 				</h4>
-				<ul class="nav nav-tabs packages border-0" id="packageTabs" role="tablist">
+				<ul class="nav nav-tabs packages" id="packageTabs" role="tablist">
 					{% for package in packages %}
 						<li class="nav-item">
 							<a class="nav-link {{ uri_package is not null ? (uri_package == package ? " active nav-log-active" : " ") : (loop.index == 1 ? " active nav-log-active" : " ") }}" id="{{ package }}Tab" onclick="showLog('{{ package }}')" data-bs-toggle="tab" href="#{{ package }}" role="tab" data-package-name="{{ package }}" aria-selected="true">{{ package }}</a>
