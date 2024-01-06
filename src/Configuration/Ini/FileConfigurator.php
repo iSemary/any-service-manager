@@ -33,8 +33,8 @@ class FileConfigurator {
                 // Separate the key and value by exploding the string into 2 pieces
                 $formattedLine = explode(" =", $line);
                 if (count($formattedLine) == 2) {
-                    $key = $formattedLine[0];
-                    $value = $formattedLine[1];
+                    $key = trim($formattedLine[0]);
+                    $value = trim($formattedLine[1]);
 
                     $data[] = ['key' => $key, 'value' => $value];
                 } else {
