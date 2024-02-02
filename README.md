@@ -49,7 +49,11 @@ Simplify Linux package management with this PHP and Twig engine. Install, uninst
 - NPM
 - Redis
 - ElasticSearch
-- Composer
+- MongoDB
+- PM2
+- Python
+- Ruby
+- Supervisor
 
 ## Contributing
 

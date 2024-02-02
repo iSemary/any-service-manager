@@ -82,3 +82,7 @@
     box-shadow: 32px 0 #212529, -32px 0 #FFF2;
   }
 }
+
+.brand-link {
+  text-decoration: none;
+}
