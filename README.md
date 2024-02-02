@@ -5,6 +5,7 @@ Simplify Linux package management with this PHP and Twig engine. Install, uninst
 ## Features
 
 - Install, uninstall, and check the status of packages on Linux.
+- Editing PHP.ini files using forms.
 - Support for popular packages like NPM, Redis, ElasticSearch, etc.
 - Easy-to-use dashboard interface using Twig with AdminLTE 3.
 
